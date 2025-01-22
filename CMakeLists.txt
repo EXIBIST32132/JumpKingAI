@@ -3,4 +3,6 @@ project(NeuralNetwork)
 
 set(CMAKE_CXX_STANDARD 26)
 
-add_executable(NeuralNetwork main.cpp)
+add_executable(NeuralNetwork main.cpp
+        main.cpp
+)

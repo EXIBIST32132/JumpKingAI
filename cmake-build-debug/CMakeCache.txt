@@ -222,6 +222,12 @@ NeuralNetwork_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 NeuralNetwork_SOURCE_DIR:STATIC=/Users/jonathanst-georges/CLionProjects/NeuralNetwork
 
+//No help, variable specified on the command line.
+Python3_EXECUTABLE:UNINITIALIZED=/Users/jonathanst-georges/CLionProjects/NeuralNetwork/.venv/bin/python
+
+//No help, variable specified on the command line.
+Python_EXECUTABLE:UNINITIALIZED=/Users/jonathanst-georges/CLionProjects/NeuralNetwork/.venv/bin/python
+
 
 ########################
 # INTERNAL cache entries
