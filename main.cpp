@@ -1,3 +1,5 @@
+#include <thread>
+#include <atomic>
 #include <iostream>
 #include <vector>
 #include <cmath>
@@ -5,6 +7,7 @@
 #include <ctime>
 #include <fstream>
 
+std::atomic<bool> is_training(true);
 // Activation function and its derivative
 float sigmoid(float x) {
     return 1.0f / (1.0f + std::exp(-x));
@@ -136,7 +139,7 @@ void NeuralNetwork::train(const std::vector<std::vector<float>>& training_data,
     for (int epoch = 0; epoch < epochs; epoch++) {
         float total_loss = 0.0f;
 
-        for (size_t i = 0; i < training_data.size(); i++) {
+        for (size_t i = 0; i < training_data.size() && is_training; i++) {
             // Forward pass
             std::vector<float> outputs = forward(training_data[i]);
 
@@ -175,6 +178,11 @@ void NeuralNetwork::train(const std::vector<std::vector<float>>& training_data,
         }
 
         std::cout << "Epoch " << epoch + 1 << ", Loss: " << total_loss / training_data.size() << std::endl;
+
+        if (!is_training) {
+            std::cout << "Training stopped by user." << std::endl;
+            break;
+        }
     }
 
 }
@@ -237,6 +245,22 @@ void NeuralNetwork::load(const std::string& filename) {
 
 
 int main() {
+    int epochs;
+    std::cout << "Enter the number of epochs: ";
+    std::cin >> epochs;
+    // Thread for listening to stop training
+    std::thread input_thread([]() {
+    std::string input;
+    while (is_training) {
+        std::cout << "Type 'q' to stop training: ";
+        std::cin >> input;
+        if (input == "q" || input == "Q") {
+            is_training = false;
+            break;
+        }
+    }
+});
+
     NeuralNetwork nn;
 
     // Load pre-trained weights
@@ -254,7 +278,7 @@ int main() {
     };
 
     // Train and save
-    nn.train(training_data, target_data, 10000000, 0.01f);
+    nn.train(training_data, target_data, epochs, 0.01f);
     nn.save("weights_and_biases.txt");
 
     // Load and test
@@ -267,6 +291,8 @@ int main() {
         std::cout << output << " ";
     }
     std::cout << std::endl;
+    input_thread.join();
 
     return 0;
+
 }
