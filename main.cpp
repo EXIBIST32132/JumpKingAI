@@ -3,6 +3,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 
 // Activation function and its derivative
 float sigmoid(float x) {
@@ -26,6 +27,10 @@ public:
     void train(const std::vector<std::vector<float>>& training_data,
                const std::vector<std::vector<float>>& target_data,
                int epochs, float learning_rate);
+
+    void save(const std::string &filename);
+
+    void load(const std::string &filename);
 
 private:
     int input_size = 8;
@@ -128,18 +133,137 @@ std::vector<float> NeuralNetwork::forward(const std::vector<float>& inputs) {
 void NeuralNetwork::train(const std::vector<std::vector<float>>& training_data,
                           const std::vector<std::vector<float>>& target_data,
                           int epochs, float learning_rate) {
-    // Training logic will go here
-    // (e.g., backpropagation and weight updates)
+    for (int epoch = 0; epoch < epochs; epoch++) {
+        float total_loss = 0.0f;
+
+        for (size_t i = 0; i < training_data.size(); i++) {
+            // Forward pass
+            std::vector<float> outputs = forward(training_data[i]);
+
+            // Calculate loss
+            std::vector<float> output_errors(output_size);
+            for (int j = 0; j < output_size; j++) {
+                output_errors[j] = target_data[i][j] - outputs[j];
+                total_loss += output_errors[j] * output_errors[j];
+            }
+
+            // Backpropagation
+            std::vector<float> delta_output(output_size);
+            for (int j = 0; j < output_size; j++) {
+                delta_output[j] = output_errors[j] * sigmoid_derivative(outputs[j]);
+            }
+
+            // Hidden3 -> Output
+            std::vector<float> delta_hidden3(hidden3_size, 0.0f);
+            for (int j = 0; j < hidden3_size; j++) {
+                for (int k = 0; k < output_size; k++) {
+                    delta_hidden3[j] += delta_output[k] * weights_hidden3_output[j][k];
+                    weights_hidden3_output[j][k] += learning_rate * hidden3[j] * delta_output[k];
+                }
+                delta_hidden3[j] *= sigmoid_derivative(hidden3[j]);
+            }
+
+            // Repeat for other layers...
+
+            // Update biases
+            for (int j = 0; j < output_size; j++) {
+                bias_output[j] += learning_rate * delta_output[j];
+            }
+            for (int j = 0; j < hidden3_size; j++) {
+                bias_hidden3[j] += learning_rate * delta_hidden3[j];
+            }
+        }
+
+        std::cout << "Epoch " << epoch + 1 << ", Loss: " << total_loss / training_data.size() << std::endl;
+    }
+
 }
+
+std::ofstream operator<<(const std::ofstream & lhs, char * str);
+
+void NeuralNetwork::save(const std::string& filename) {
+    std::ofstream file(filename, std::ios::out);
+    if (!file.is_open()) {
+        std::cerr << "Error: Unable to open file for saving." << std::endl;
+        return;
+    }
+
+    // Save weights and biases for all layers
+    for (const auto& layer : {weights_input_hidden1, weights_hidden1_hidden2, weights_hidden2_hidden3, weights_hidden3_output}) {
+        for (const auto& row : layer) {
+            for (float weight : row) {
+                file << weight << " ";
+            }
+            file << "\n";
+        }
+    }
+
+    for (const auto& biases : {bias_hidden1, bias_hidden2, bias_hidden3, bias_output}) {
+        for (float bias : biases) {
+            file << bias << " ";
+        }
+        file << "\n";
+    }
+
+    file.close();
+}
+
+
+void NeuralNetwork::load(const std::string& filename) {
+    std::ifstream file(filename, std::ios::in);
+    if (!file.is_open()) {
+        std::cerr << "Error: Unable to open file for loading." << std::endl;
+        return;
+    }
+
+    // Load weights and biases for all layers
+    for (auto& layer : {&weights_input_hidden1, &weights_hidden1_hidden2, &weights_hidden2_hidden3, &weights_hidden3_output}) {
+        for (auto& row : *layer) {
+            for (float& weight : row) {
+                file >> weight;
+            }
+        }
+    }
+
+    for (auto& biases : {&bias_hidden1, &bias_hidden2, &bias_hidden3, &bias_output}) {
+        for (float& bias : *biases) {
+            file >> bias;
+        }
+    }
+
+    file.close();
+}
+
+
 
 int main() {
     NeuralNetwork nn;
-    std::vector<float> inputs = {1.0f, 0.5f, 0.2f, 0.8f, 0.6f, 0.9f, 0.4f, 0.7f};
 
-    std::vector<float> outputs = nn.forward(inputs);
+    // Load pre-trained weights
+    nn.load("weights_and_biases.txt");
 
-    std::cout << "Outputs: ";
-    for (const auto& output : outputs) {
+    // Example training data
+    std::vector<std::vector<float>> training_data = {
+        {1.0f, 0.5f, 0.2f, 0.8f, 0.6f, 0.9f, 0.4f, 0.7f},
+        {0.2f, 0.3f, 0.9f, 0.1f, 0.5f, 0.4f, 0.6f, 0.8f}
+    };
+
+    std::vector<std::vector<float>> target_data = {
+        {0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f},
+        {1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f}
+    };
+
+    // Train and save
+    nn.train(training_data, target_data, 10000000, 0.01f);
+    nn.save("weights_and_biases.txt");
+
+    // Load and test
+    nn.load("weights_and_biases.txt");
+    std::vector<float> test_input = {1.0f, 0.5f, 0.2f, 0.8f, 0.6f, 0.9f, 0.4f, 0.7f};
+    std::vector<float> outputs = nn.forward(test_input);
+
+    std::cout << "Test output after loading: ";
+    for (float output : outputs) {
         std::cout << output << " ";
     }
     std::cout << std::endl;
