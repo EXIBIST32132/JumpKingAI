@@ -1,7 +1,0 @@
-# ninja log v6
-3	1301	1737579366016876334	CMakeFiles/NeuralNetwork.dir/NeuralNetworkTemplate.cpp.o	72cd2f35e1853d32
-3	74	1737579750796282225	build.ninja	b34ede116f814bdf
-6	2329	1737579400769856954	CMakeFiles/NeuralNetwork.dir/main.cpp.o	916945530fb9b580
-3	74	1737579446115572868	NeuralNetwork	ac416c7b4bc97cb0
-5	1056	1737579945082031302	CMakeFiles/NeuralNetwork.dir/main.cpp.o	916945530fb9b580
-1056	1124	1737579946132537258	NeuralNetwork	ac416c7b4bc97cb0

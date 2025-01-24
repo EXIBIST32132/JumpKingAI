@@ -1,3 +1,0 @@
-/Users/jonathanst-georges/CLionProjects/NeuralNetwork/cmake-build-debug/CMakeFiles/NeuralNetwork.dir
-/Users/jonathanst-georges/CLionProjects/NeuralNetwork/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/jonathanst-georges/CLionProjects/NeuralNetwork/cmake-build-debug/CMakeFiles/rebuild_cache.dir
