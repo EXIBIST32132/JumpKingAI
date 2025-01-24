@@ -1,0 +1,8 @@
+# ninja log v6
+9	882	1737744221489112262	CMakeFiles/NeuralNetwork.dir/src/neural_network.cpp.o	52bd510a30dda261
+5	1276	1737741696114787668	CMakeFiles/NeuralNetwork.dir/NeuralNetworkTemplate.cpp.o	72cd2f35e1853d32
+9	745	1737744221489310295	CMakeFiles/NeuralNetwork.dir/src/game_simulation.cpp.o	1e366d4a592fd1ee
+9	744	1737744221488767611	CMakeFiles/NeuralNetwork.dir/src/main.cpp.o	f313b89f4f7c8e44
+2	91	1737744516320925329	build.ninja	b34ede116f814bdf
+5	1101	1737743194487251834	CMakeFiles/NeuralNetwork.dir/main.cpp.o	916945530fb9b580
+882	952	1737744222361984246	NeuralNetwork	8ae7b46a68736834
