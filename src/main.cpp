@@ -3,7 +3,7 @@
 #include "game_simulation.h"
 
 int main() {
-    NeuralNetwork nn(256, 128, 2); // Input size: 256, Hidden size: 128, Output size: 2
+    NeuralNetwork nn(8, 512, 2); // Input size: 256, Hidden size: 128, Output size: 2
 
     std::cout << "Welcome to Jump King AI Trainer!\n";
     std::cout << "Options:\n";
@@ -20,7 +20,7 @@ int main() {
         std::vector<std::vector<float>> target_data = load_csv("target_data.csv");
 
         std::cout << "Starting training...\n";
-        nn.train(training_data, target_data, 1000, 0.01f); // Train for 1000 epochs with 0.01 learning rate
+        nn.train(training_data, target_data, 1000000, 0.01f); // Train for 1000 epochs with 0.01 learning rate
 
         std::cout << "Saving weights and biases...\n";
         nn.save_weights("weights.txt");
