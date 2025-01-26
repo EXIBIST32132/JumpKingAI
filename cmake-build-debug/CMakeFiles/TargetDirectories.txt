@@ -1,3 +1,3 @@
-/Users/jonathanst-georges/CLionProjects/JumpKingAI/cmake-build-debug/CMakeFiles/NeuralNetwork.dir
-/Users/jonathanst-georges/CLionProjects/JumpKingAI/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/jonathanst-georges/CLionProjects/JumpKingAI/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/jonat/CLionProjects/JumpKingAI/cmake-build-debug/CMakeFiles/JumpKingAI.dir
+C:/Users/jonat/CLionProjects/JumpKingAI/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/jonat/CLionProjects/JumpKingAI/cmake-build-debug/CMakeFiles/rebuild_cache.dir

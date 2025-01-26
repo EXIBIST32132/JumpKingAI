@@ -1,9 +1,12 @@
 #include "game_simulation.h"
-#include <opencv2/opencv.hpp>
-#include <thread>
 #include <chrono>
-#include <Windows.h>
 #include <iostream>
+#include <thread>
+#include <Windows.h>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/opencv.hpp>
 
 // Helper functions for screen capture and key pressing
 cv::Mat capture_screen(int x, int y, int width, int height) {
